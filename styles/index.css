@@ -1,0 +1,285 @@
+html {
+  padding: 0px;
+  margin: 0px;
+  overflow: hidden;
+}
+
+header {
+  position: absolute;
+  width: 100%;
+}
+
+.header {
+  font-family: "Terminus (TTF)";
+  text-align: center;
+  position: absolute;
+}
+
+body {
+  color: #d0d0d0;
+  background-color: #101010;
+  padding: 0px;
+  margin: 0px;
+}
+
+canvas {
+  display: inline;
+}
+
+.editor { 
+  width: 100%;
+  height: 100%;
+}
+
+.editorContainer { 
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 10;
+  visibility: hidden;
+}
+
+.canvasContainer { 
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  overflow: none;
+}
+.overlayCanvas { 
+  top: 0px;
+  left: 0px;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.terminalResult { 
+  color: #00ff00;
+  font-size: 16px;
+  font-family: mono;
+  margin-bottom: 15px;
+  flex-basis: max-content;
+  padding: 20px;
+  background-color: black;
+  height: max-content;
+  min-height: max-content;
+}
+.terminalArea {
+  background: none;
+  border: none;
+  width: 100%;
+  color: white;
+  margin-bottom: "10px";
+}
+
+.terminal {
+  width: 80%;
+  height: 60%;
+  background-color: #202020d0;
+  border-radius: 10px;
+  font-family: "mono";
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.overlay { 
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 15;
+  padding: 15px;
+  background-color: #00000080;
+  border-radius: 10px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.overlayHtmlCanvas { 
+  position: absolute;
+  top: 100px;
+  left: 100px;
+  z-index: 2;
+  padding: 15px;
+  background-color: #32323282;
+  border-radius: 10px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.mainContainer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.headerTitle { 
+  left: 30px;
+}
+#resizable { width: 150px; height: 150px; padding: 0.5em; }
+#resizable h3 { text-align: center; margin: 0; }
+
+.pageContainer { 
+  width: 100%;
+}
+
+.pc{ 
+  width: 100%;
+  background: rgba(40, 40, 40, 0.6);
+  padding: 0px;
+  margin-bottom: 15px;
+}
+
+.pv { 
+  max-width: 800px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  margin: auto;
+  padding:10px;
+}
+
+.pt { 
+  max-width: 800px;
+  padding: 15px;
+  margin: auto;
+  background-color: rgb(0,0,0,0.1);
+  margin-bottom: 10px;
+}
+
+.pts { 
+  max-width: 800px;
+  padding: 5px;
+  margin: auto;
+  background-color: rgb(0,0,0,0.1);
+}
+
+.ptw { 
+  max-width: 1400px;
+  padding: 15px;
+  background-color: rgb(0,0,0,0.1);
+  margin-bottom: 10px;
+  display: flow-root;
+  margin:auto;
+  text-align: center;
+}
+
+.paragraphContainerHeader { 
+  width: 100%;
+  background: rgba(40, 40, 40, 0.6);
+  margin-bottom: 15px;
+  padding-top: 15px;
+}
+
+h1 { 
+  font-family: 'Montserrat';font-size: 32px;
+  text-align: center;
+}
+
+p,a, input { 
+  font-family: 'Montserrat';font-size: 20px;
+}
+a {
+  padding: 10px;
+}
+.txtbox{
+  background-color: rgba(0,0,0,0.3);
+}
+input { 
+  display: flex;
+  background-color: rgba(0,0,0, 0.2);
+  border: 0px;
+  border-radius: 0px;
+  color: white;
+}
+.backgroundCanvas { 
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.horizontal { 
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+.horizontal li {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  margin: 0px;
+  text-decoration: none;
+}
+
+button {
+border: 0px;
+background-color: #323ea2b8;
+color: white;
+padding: 15px;
+text-align: center;
+text-decoration: none;
+display: inline-block;
+}
+
+.pushable {
+  background: hsl(215deg 70% 32%);
+  border-radius: 0px;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline-offset: 4px;
+}
+
+.front {
+  display: block;
+  padding: 12px 42px;
+  border-radius: 0px;
+  font-size: 1.25rem;
+  background: hsl(215deg 70% 47%);
+  color: white;
+  transform: translateY(-6px);
+}
+
+.pushable:active .front {
+  transform: translateY(-2px);
+}
+
+.hbox {
+  display:flex;
+  flex: 1;
+}
+
+.playground { 
+  width: 100%;
+  height: 80%;
+}
+code { 
+  color: #00ff00;
+  font-size: 16px;
+  font-family: mono;
+  margin-bottom:15px;
+}
+
+table { 
+  width: 100%;
+  text-align: center;
+  border: 1px solid black;
+}
+.spanbox {
+  min-width: 600px;
+  min-height: 600px;
+  max-width: 600px;
+  max-height: 600px;
+  display: inline-flex;
+  margin: 10px;
+  padding: 0px;
+}
+
+.player {
+  width: 100%;
+  height: 100%;
+}
