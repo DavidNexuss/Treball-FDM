@@ -46,9 +46,19 @@ var ShaderContext = /** @class */ (function () {
         return program;
     };
     ShaderContext.prototype.render = function () {
+        var displayWidth = this.canvas.clientWidth;
+        var displayHeight = this.canvas.clientHeight;
+        var needResize = this.canvas.width !== displayWidth ||
+            this.canvas.height !== displayHeight;
+        if (needResize) {
+            // Make the canvas the same size
+            this.canvas.width = displayWidth;
+            this.canvas.height = displayHeight;
+        }
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.quad);
         this.gl.useProgram(this.program);
         this.gl.uniform2f(this.uniform_resolution, this.canvas.clientWidth, this.canvas.clientHeight);
+        this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
         this.gl.uniform1f(this.uniform_time, g_time);
         this.gl.enableVertexAttribArray(0);
         this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);
@@ -75,7 +85,14 @@ function createShadered(shaderCode, vsShader) {
     }
     var container = document.createElement("div");
     var canvas = document.createElement("canvas");
-    renderingContexts.push(new ShaderContext(canvas, shaderCode, vsShader));
+    var editor = document.createElement("div");
+    canvas.className = "glViewer";
+    editor.className = "glEditor";
+    editor.innerHTML = shaderCode;
     container.appendChild(canvas);
+    container.appendChild(editor);
+    editor.style.minHeight = "10rem";
+    createMirror(editor);
+    renderingContexts.push(new ShaderContext(canvas, shaderCode, vsShader));
     return container;
 }

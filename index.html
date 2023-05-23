@@ -4,9 +4,10 @@
   <link rel="stylesheet" href="styles/index.css">
   <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
   <script src="https://unpkg.com/delaunator@5.0.0/delaunator.min.js"></script>
-  <script id="vertex" type="glsl">
-
-    precision highp float;
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.22.0/ace.js"
+    integrity="sha512-IdmB24zVCDjNtbu1v07uIbhNQVeaZEHc5pycdS/bzKoDeP4jgN8ZN3X3Akvtd84ZAroVIhUqG3+dy47WVswxlw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script id="vertex" type="glsl">precision highp float;
 
     attribute vec2 a_uv;
     void main() { 
@@ -16,9 +17,7 @@
   </script>
 
   <script> var vertexShader = document.getElementById("vertex").innerText; </script>
-  <script src="assets/shaders/fdm.glsl" type="glsl" id="shader">
-
-    precision highp float;
+  <script src="assets/shaders/fdm.glsl" type="glsl" id="shader">precision highp float;
     uniform vec2 u_resolution;
     uniform vec2 u_mouse;
     uniform float u_time;
@@ -27,9 +26,10 @@
     void main() {
         vec2 st = (gl_FragCoord.xy) / u_resolution;
         // Create a grid of squares that depends on the mouse position
-        gl_FragColor = vec4(vec3(st,sin(u_time)),1.0);
+        gl_FragColor = vec4(vec3(st.x,st.y, 0.0),1.0);
     }
     </script>
+  <script src="mirror.js"></script>
   <script src="shadered.js"></script>
 
 <body>
