@@ -18,16 +18,114 @@
 
   <script> var vertexShader = document.getElementById("vertex").innerText; </script>
   <script src="assets/shaders/fdm.glsl" type="glsl" id="shader">precision highp float;
+    precision mediump float;
     uniform vec2 u_resolution;
-    uniform vec2 u_mouse;
     uniform float u_time;
-    uniform float u_frame;
 
-    void main() {
-        vec2 st = (gl_FragCoord.xy) / u_resolution;
-        // Create a grid of squares that depends on the mouse position
-        gl_FragColor = vec4(vec3(st.x,st.y, 0.0),1.0);
+    vec3 hsv2rgb(vec3 c) {
+        vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+        vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+        return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
     }
+    
+    vec3 colorRamp(float t) { 
+        vec3 up = vec3(0.5,0.5,1);
+        vec3 down = vec3(1,-0.2,-0.2);
+    
+        return up * t + down * (1.0 - t);
+    }
+    
+    //Return world coordinates
+    vec2 getSt() { 
+        vec2 st = gl_FragCoord.xy / u_resolution;
+        st = st - 0.5;
+        return st;
+    }
+    
+    //Ligth wave intensity value for a wave with frequency w
+    float light(vec2 st, float t) { 
+        float w = 10.0;
+        float l = length(vec3(st.x, st.y, 0));
+        return sin(l - t * w) * 0.5 + 0.5;
+    }
+    
+    //Inverse square intensity falloff
+    float lightValue(vec2 st) { 
+        return 1.0 / sqrt(st.x * st.x + st.y * st.y);
+    }
+    
+    
+    //Show light wave for centered omni light
+    float test1(vec2 st, float t) { 
+        return light(st * 10.0, t);
+    }
+    
+    //Show light intensity for same case than 1
+    float test2(vec2 st, float t) { 
+        return lightValue(st);
+    }
+    
+    //Combine both graphs, with interference pattern combined with p1 and p2
+    float test3(vec2 st, float t) { 
+        st = st * 20.0;
+        vec2 p1 = vec2(30.0,0.0) + st;
+        vec2 p2 = vec2(-30.0,0.0) + st;
+    
+        return (light(p1, t) + light(p2, t)) * 0.5;
+    }
+    
+    //Single slip experiment
+    float test4(vec2 st, float t)
+    {
+        st = st * 100.0;
+        float result = 0.0;
+        float resultValue = 0.0;
+    
+        float count = 0.0;
+        for(float k = 0.0; k <= 2.0; k+= 2.0) { 
+        for(float i = -1.0; i < 2.0; i+= 0.1) { 
+            count+=1.0;
+            vec2 off = vec2(1.0,-10.3 + i + k * 6.0 * sin(t * 0.1)) * 10.0;
+            vec2 p = off + st;
+            float lig = light(p, t);
+            result += lig;
+            resultValue += lightValue(p);
+        }
+        }
+    
+        result /= count;
+        return result;
+    }
+    
+    float fft(vec2 st, float t) { 
+        //st *= 100.0;
+        float maxF = -100.0;
+        float minF = 100.0;
+    
+        for(float x = 0.0; x < 1000.0; x+= 100.0) { 
+            float l = test4(st, t + x);
+            maxF = max(maxF, l);
+            minF = min(minF, l);
+        }
+        return maxF - minF;
+    }
+    
+    float plotFft(vec2 st, float t) { 
+        float value = fft(vec2(1.0,st.x * 0.6), t);
+    
+        float func = max(1.0 - abs(value - st.y),0.0);
+        if(func < 0.98) return pow(func, 40.0);
+        return func;
+    }
+
+    void main() { 
+      vec2 st = getSt() * 10.0;
+      float result = test3(st, u_time * 10.0);
+      //result += plotFft(st - vec2(0,3.5), iTime);
+      vec3 color = vec3(result, result, result);
+      gl_FragColor = vec4(color,1.0);
+    }
+
     </script>
   <script src="mirror.js"></script>
   <script src="shadered.js"></script>
@@ -46,7 +144,17 @@
       <script>
         document.getElementById("target").appendChild(createShadered(document.getElementById("shader").innerText, vertexShader));
       </script>
-      <p> Aquest treball consisteix en el </p>
+      <p>
+        Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el
+        texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se
+        dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro
+        de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos
+        electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas
+        "Letraset", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como
+        por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.
+
+
+      </p>
     </div>
   </div>
 </body>

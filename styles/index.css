@@ -30,6 +30,7 @@ header {
 
 .glViewer { 
 width: -webkit-fill-available;
+height: 800px;
 }
 
 .glEditor { 
@@ -151,6 +152,7 @@ canvas {
   height: 100%;
   position: fixed;
   z-index: -1;
+  min-width: 2000px;
 }
 .pageContainer { 
   width: 100%;
