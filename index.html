@@ -4,11 +4,34 @@
   <link rel="stylesheet" href="styles/index.css">
   <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
   <script src="https://unpkg.com/delaunator@5.0.0/delaunator.min.js"></script>
-</head>
+  <script id="vertex" type="glsl">
+
+    precision highp float;
+
+    in vec2 a_uv;
+    void main() { 
+      gl_Position.xy = a_uv;
+    }
+
+  </script>
+
+  <script> var vertexShader = document.getElementById("vertex").innerText; </script>
+  <script src="assets/shaders/fdm.glsl" type="glsl" id="shader">
+
+    precision highp float;
+    uniform vec2 u_mouse;
+    uniform float u_time;
+    uniform float u_frame;
+
+    void main() {
+        // Create a grid of squares that depends on the mouse position
+        gl_FragColor = vec4(vec3(gl_FragCoord.xy,1.0),1.0);
+    }
+    </script>
+  <script src="shadered.js"></script>
 
 <body>
-  <div class="pageContainer">
-  </div>
+  <img class="imageBackground" src="assets/background2.webp" alt="">
 
   <div class="paragraphContainerHeader">
     <h1> Treball FDM</h1>
@@ -16,7 +39,12 @@
 
   <div class="pc">
     <div class="pt">
-      <h1> Preambul</h1>
+      <h2> Preambul</h2>
+      <div id="target"></div>
+      <script>
+        createShadered(document.getElementById("shader").innerText, vertexShader);
+      </script>
+      <p> Aquest treball consisteix en el </p>
     </div>
   </div>
 </body>
