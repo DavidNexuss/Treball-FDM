@@ -1,7 +1,12 @@
+var g_time = 0;
 class ShaderContext {
   gl: WebGLRenderingContext
   program: WebGLProgram
   quad: WebGLBuffer
+  canvas: HTMLCanvasElement;
+
+  uniform_resolution: WebGLUniformLocation;
+  uniform_time : WebGLUniformLocation;
 
   createQuad() {
     var quad = this.gl.createBuffer();
@@ -42,17 +47,26 @@ class ShaderContext {
       const info = this.gl.getProgramInfoLog(program);
       console.error(`Shader compilation error ${info}`);
     }
+
     return program
   }
   constructor(canvas: HTMLCanvasElement, fsShader: string, vsShader: string) {
     this.gl = canvas.getContext("webgl");
     this.program = this.createProgram(fsShader, vsShader);
     this.quad = this.createQuad();
+    this.canvas = canvas;
+
+
+    this.uniform_resolution = this.gl.getUniformLocation(this.program, "u_resolution");
+    this.uniform_time = this.gl.getUniformLocation(this.program, "u_time");
+
   }
 
   render() {
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.quad);
     this.gl.useProgram(this.program)
+    this.gl.uniform2f(this.uniform_resolution, this.canvas.clientWidth, this.canvas.clientHeight);
+    this.gl.uniform1f(this.uniform_time, g_time);
     this.gl.enableVertexAttribArray(0)
     this.gl.drawArrays(this.gl.TRIANGLES, 0, 6)
   }
@@ -67,6 +81,7 @@ function run() {
     renderingContexts[i].render();
   }
   requestAnimationFrame(run);
+  g_time += 0.01;
 }
 
 

@@ -8,9 +8,9 @@
 
     precision highp float;
 
-    in vec2 a_uv;
+    attribute vec2 a_uv;
     void main() { 
-      gl_Position.xy = a_uv;
+      gl_Position.xy = a_uv * 2.0 - 1.0;
     }
 
   </script>
@@ -19,13 +19,15 @@
   <script src="assets/shaders/fdm.glsl" type="glsl" id="shader">
 
     precision highp float;
+    uniform vec2 u_resolution;
     uniform vec2 u_mouse;
     uniform float u_time;
     uniform float u_frame;
 
     void main() {
+        vec2 st = (gl_FragCoord.xy) / u_resolution;
         // Create a grid of squares that depends on the mouse position
-        gl_FragColor = vec4(vec3(gl_FragCoord.xy,1.0),1.0);
+        gl_FragColor = vec4(vec3(st,sin(u_time)),1.0);
     }
     </script>
   <script src="shadered.js"></script>
@@ -42,7 +44,7 @@
       <h2> Preambul</h2>
       <div id="target"></div>
       <script>
-        createShadered(document.getElementById("shader").innerText, vertexShader);
+        document.getElementById("target").appendChild(createShadered(document.getElementById("shader").innerText, vertexShader));
       </script>
       <p> Aquest treball consisteix en el </p>
     </div>
